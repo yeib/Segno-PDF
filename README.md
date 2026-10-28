@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="public/InkIt_Logo.png" width="150" alt="InkIt Logo"/>
-  <h1>🖋️ InkIt</h1>
+  <img src="public/InkIt_Logo.png" width="150" alt="Segno PDF Logo"/>
+  <h1>🖋️ Segno PDF</h1>
   
   <p>
     <img src="https://img.shields.io/badge/Platform-Windows-blue" alt="Windows Platform" />
@@ -28,15 +28,15 @@
 winget install 9PH8KK70MK9M
 ```
 
-Or download directly from the [Microsoft Store](https://apps.microsoft.com/detail/9PH8KK70MK9M) or [GitHub Releases](https://github.com/yeib/InkIt/releases/latest).
+Or download directly from the [Microsoft Store](https://apps.microsoft.com/detail/9PH8KK70MK9M) or [GitHub Releases](https://github.com/yeib/Segno-PDF/releases/latest).
 
 ---
 
-## ⚡ Why InkIt?
+## ⚡ Why Segno PDF?
 
-Adobe Acrobat is bloated and slow. SumatraPDF is great for reading, but lacks interactive signing and form filling. Web converters compromise document privacy. **InkIt bridges the gap.**
+Adobe Acrobat is bloated and slow. SumatraPDF is great for reading, but lacks interactive signing and form filling. Web converters compromise document privacy. **Segno PDF bridges the gap.**
 
-Built natively for Windows with **Rust (Tauri v2) and modern web technologies**, InkIt opens your heaviest PDFs in milliseconds, lets you sign fluidly, type anywhere, drop stamps, and flatten annotations directly into the document—all strictly offline on your own machine.
+Built natively for Windows with **Rust (Tauri v2) and modern web technologies**, Segno PDF opens your heaviest PDFs in milliseconds, lets you sign fluidly, type anywhere, drop stamps, and flatten annotations directly into the document—all strictly offline on your own machine.
 
 ## 💎 Key Features
 
@@ -52,14 +52,14 @@ Built natively for Windows with **Rust (Tauri v2) and modern web technologies**,
 
 ## 🏗️ Architecture & Tech Stack
 
-InkIt follows a lightweight, decoupled architecture designed for speed and native Windows integration:
+Segno PDF follows a lightweight, decoupled architecture designed for speed and native Windows integration:
 
 - **Frontend:** Vanilla JS + ES6 Modules. Utilizes `pdfjs-dist` on dedicated Web Workers with WASM and CMap bundles for fast, pixel-perfect rendering of any PDF format.
 - **Backend:** Native Rust 🦀 + Tauri v2. Handles OS dialogs, secure file system operations (`std::fs`), and binary annotation flattening.
 
 ## 🚀 Getting Started
 
-To run InkIt locally in development mode:
+To run Segno PDF locally in development mode:
 
 ### Prerequisites
 - Node.js (v18+)
@@ -74,8 +74,8 @@ To run InkIt locally in development mode:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yeib/InkIt.git
-cd InkIt
+git clone https://github.com/yeib/Segno-PDF.git
+cd Segno-PDF
 
 # Install dependencies (copies WASM and CMap assets automatically)
 npm install
@@ -94,11 +94,11 @@ npm run tauri build
 
 ---
 
-## ⚡ Need Heavy-Duty Document Tools? Meet InkIt Pro
+## ⚡ Need Heavy-Duty Document Tools? Meet Segno PDF Pro
 
-For power users, legal teams, and businesses needing batch processing and advanced cryptographic tools, explore **InkIt Pro** on the Microsoft Store:
+For power users, legal teams, and businesses needing batch processing and advanced cryptographic tools, explore **Segno PDF Pro** on the Microsoft Store:
 
-| Feature | 🖋️ InkIt (Open Source) | ⚡ InkIt Pro |
+| Feature | 🖋️ Segno PDF (Open Source) | ⚡ Segno PDF Pro |
 | :--- | :---: | :---: |
 | **Price & License** | Free (MIT) | One-time Lifetime |
 | **Instant Offline Signing & Vault** | ✅ | ✅ |
@@ -112,7 +112,7 @@ For power users, legal teams, and businesses needing batch processing and advanc
 | **PDF Doctor & Damaged XRefs Repair** | ❌ | ✅ |
 | **Export Center (ZIP, Long PNG strip, PDF)** | ❌ | ✅ |
 
-👉 **[Get InkIt Pro on the Microsoft Store](https://apps.microsoft.com/detail/9N829VPRQ92W)** — *Upgrade to the complete offline professional PDF suite.*
+👉 **[Get Segno PDF Pro on the Microsoft Store](https://apps.microsoft.com/detail/9N829VPRQ92W)** — *Upgrade to the complete offline professional PDF suite.*
 
 ---
 

@@ -27,7 +27,7 @@ async function setupVersion() {
         const version = await getVersion();
         const versionDisplay = document.getElementById('app-version-display');
         const aboutVersion = document.getElementById('about-app-version');
-        if (versionDisplay) versionDisplay.innerText = `InkIt v${version}`;
+        if (versionDisplay) versionDisplay.innerText = `Segno PDF v${version}`;
         if (aboutVersion) aboutVersion.innerText = `v${version}`;
     } catch (error) {
         console.error('No se pudo obtener la versión de Tauri:', error);

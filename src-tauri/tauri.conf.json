@@ -1,6 +1,6 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "InkIt",
+  "productName": "Segno PDF",
   "version": "1.0.5",
   "identifier": "Yeib.InkIt",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "InkIt",
+        "title": "Segno PDF",
         "width": 1280,
         "height": 800,
         "minWidth": 800,
@@ -44,7 +44,7 @@
           "pdf"
         ],
         "name": "Portable Document Format",
-        "description": "InkIt PDF Document",
+        "description": "Segno PDF Document",
         "role": "Viewer"
       }
     ],
