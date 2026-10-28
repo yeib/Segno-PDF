@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/InkIt_Logo.png" width="150" alt="Segno PDF Logo"/>
+  <img src="public/SegnoPDF_Logo.png" width="150" alt="Segno PDF Logo"/>
   <h1>🖋️ Segno PDF</h1>
   
   <p>

@@ -106,7 +106,7 @@ export function setupDragAndDrop(appWindow, onFileLoaded) {
                             await showAlert(t('alert.title.error'), t('alert.error_open'), 'error');
                         }
                     } else {
-                        await showAlert('InkIt', t('alert.only_pdf'), 'warning');
+                        await showAlert('Segno', t('alert.only_pdf'), 'warning');
                     }
                 }
             }
@@ -139,5 +139,4 @@ export function setupDragAndDrop(appWindow, onFileLoaded) {
     window.addEventListener('dragover', handleDragOver);
     window.addEventListener('drop', handleDrop);
 }
-
 

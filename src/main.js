@@ -12,7 +12,7 @@ import { setupDocumentLifecycle } from './core/documentLifecycle.js';
 import { setupToolSelection } from './ui/toolSelection.js';
 import { setupWindowControls } from './ui/windowControls.js';
 
-console.log('InkIt Inicializado: Yeib Ecosystem');
+console.log('Segno Inicializado: Yeib Ecosystem');
 
 async function initApp() {
     setupAppChrome();

@@ -34,7 +34,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Segno PDF</title>
     <!-- Importar CSS Base -->
-    <link rel="icon" type="image/png" href="/InkIt_Logo.png" />
+    <link rel="icon" type="image/png" href="/SegnoPDF_Logo.png" />
     <link rel="stylesheet" href="/src/css/styles.css" />
     <link rel="stylesheet" href="/src/css/typewriter.css" />
     <link rel="stylesheet" href="/src/css/signatures.css" />
@@ -63,10 +63,10 @@
             </div>
           </div>
           <span class="app-title" data-tauri-drag-region style="display: flex; align-items: center;">
-            <img src="/InkIt_Logo.png" style="width: 16px; height: 16px; margin-right: 7px; border-radius: 3px; filter: drop-shadow(0 2px 4px rgba(0, 229, 255, 0.35));" alt="Logo" />
-            <span class="app-title-text">Segno PDF</span>
+            <img src="/SegnoPDF_Logo.png" style="width: 16px; height: 16px; margin-right: 7px; border-radius: 3px; filter: drop-shadow(0 2px 4px rgba(0, 229, 255, 0.35));" alt="Logo" />
+            <span class="app-title-text">Segno</span>
             <a href="https://yeib.cl" target="_blank" data-i18n="app.by" class="app-by" style="font-size: 11px; color: var(--accent-cyan); text-decoration: none; margin-left: 8px; font-weight: normal; font-style: italic; opacity: 0.85;">by Yeib</a>
-            <button id="btn-open-workspace" class="btn-icon" style="margin-left: 10px; width: 26px; height: 26px; border-radius: 6px;" data-tooltip="Open InkIt Folder" data-i18n-tooltip="btn.workspace">
+            <button id="btn-open-workspace" class="btn-icon" style="margin-left: 10px; width: 26px; height: 26px; border-radius: 6px;" data-tooltip="Open Segno Folder" data-i18n-tooltip="btn.workspace">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
                 <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
               </svg>
@@ -255,7 +255,7 @@
       <div class="glass-panel modal-content" style="width: 420px; padding: 24px; display: flex; flex-direction: column; gap: 14px;">
         <h3 style="margin: 0;" id="stamp-modal-heading" data-i18n="modal.stamp.title">Create Digital Identity</h3>
 
-        <!-- Tabs estilo InkIt Pro -->
+        <!-- Tabs estilo Segno Pro -->
         <div style="display: flex; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; width: 100%;">
           <button type="button" id="tab-pfx-create" class="modal-tab-btn active" data-i18n="modal.pfx.tab_create">+ Create Seal</button>
           <button type="button" id="tab-pfx-import" class="modal-tab-btn" data-i18n="modal.pfx.tab_import">🔑 Import .pfx</button>
@@ -374,7 +374,7 @@
     <div class="modal-overlay" id="about-modal" style="display: none; z-index: 9999;">
       <div class="modal-content glass-panel" style="min-width: 350px; text-align: center;">
         <h3 data-i18n="about.title">ℹ️ About Segno PDF</h3>
-        <img src="/InkIt_Logo.png" alt="Segno PDF Logo" style="width: 80px; height: 80px; margin: 16px auto; display: block;" />
+        <img src="/SegnoPDF_Logo.png" alt="Segno PDF Logo" style="width: 80px; height: 80px; margin: 16px auto; display: block;" />
         <div style="display: flex; flex-direction: column; gap: 8px; text-align: left; margin: 16px 0;">
           <p><strong><span data-i18n="about.version">Version:</span></strong> <span id="about-app-version">v?.?.?</span></p>
           <p><strong><span data-i18n="about.contact">Contact:</span></strong> <a href="mailto:yeib@pm.me" style="color: var(--accent-cyan); text-decoration: none;">yeib@pm.me</a></p>
@@ -453,4 +453,3 @@
     <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px;"></div>
   </body>
 </html>
-

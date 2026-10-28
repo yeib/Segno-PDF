@@ -1,7 +1,7 @@
 Add-Type -AssemblyName System.Drawing
 
 $apps = @{
-    'inkit' = @{ logo = 'public/InkIt_Logo.png'; color1 = '#0f172a'; color2 = '#1e3a8a'; glow = '#3b82f6' }
+    'inkit' = @{ logo = 'public/SegnoPDF_Logo.png'; color1 = '#0f172a'; color2 = '#1e3a8a'; glow = '#3b82f6' }
 }
 
 $baseDir = Get-Location

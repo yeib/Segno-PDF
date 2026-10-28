@@ -104,7 +104,7 @@ fn inspect_pfx(pfx_path: String, password: String) -> Result<pdf_engine::PfxIden
 fn inspect_pdf_signatures(
     pdf_path: Option<String>,
     pdf_bytes: Option<Vec<u8>>,
-) -> Result<inkit_core::sig_inspector::PdfSignatureReport, String> {
+) -> Result<segno_core::sig_inspector::PdfSignatureReport, String> {
     let bytes = if let Some(b) = pdf_bytes {
         b
     } else if let Some(p) = pdf_path {
@@ -114,7 +114,7 @@ fn inspect_pdf_signatures(
         return Err("Se requiere pdf_path o pdf_bytes".to_string());
     };
 
-    inkit_core::sig_inspector::inspect_pdf_signatures(&bytes)
+    segno_core::sig_inspector::inspect_pdf_signatures(&bytes)
         .map_err(|e| format!("Error inspeccionando firmas digitales: {e}"))
 }
 
@@ -144,22 +144,22 @@ pub fn run() {
                 )?;
             }
 
-            // Asegurar que la carpeta Documents/InkIt exista y tenga el ícono oficial de InkIt
+            // Asegurar que la carpeta Documents/Segno PDF exista y tenga el ícono oficial de Segno
             #[cfg(target_os = "windows")]
             {
                 let mut doc_dir = std::path::PathBuf::from(
                     std::env::var("USERPROFILE").unwrap_or_else(|_| "C:\\".to_string()),
                 );
                 doc_dir.push("Documents");
-                let inkit_dir = if doc_dir.join("InkIt").is_file() {
-                    doc_dir.join("InkItYeib")
+                let segno_dir = if doc_dir.join("Segno PDF").is_file() {
+                    doc_dir.join("Segno PDF Yeib")
                 } else {
-                    doc_dir.join("InkIt")
+                    doc_dir.join("Segno PDF")
                 };
-                // Solo si no existe icon_pro.ico (el ícono de InkIt Pro tiene prioridad y no debe ser sobreescrito)
-                if !inkit_dir.join("icon_pro.ico").exists() {
+                // Solo si no existe icon_pro.ico (el ícono de Segno Pro tiene prioridad y no debe ser sobreescrito)
+                if !segno_dir.join("icon_pro.ico").exists() {
                     let icon_bytes = include_bytes!("../icons/icon.ico");
-                    let _ = yeib_sys::fs_ops::set_folder_custom_icon(&inkit_dir, icon_bytes);
+                    let _ = yeib_sys::fs_ops::set_folder_custom_icon(&segno_dir, icon_bytes);
                 }
             }
 

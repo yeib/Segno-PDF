@@ -2046,10 +2046,10 @@ dependencies = [
  "base64 0.22.1",
  "flate2",
  "image",
- "inkit_core",
  "log",
  "lopdf 0.34.0",
  "openssl",
+ "segno_core",
  "serde",
  "serde_json",
  "tauri",
@@ -2060,25 +2060,6 @@ dependencies = [
  "tauri-plugin-shell",
  "time",
  "yeib_sys",
-]
-
-[[package]]
-name = "inkit_core"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "base64 0.22.1",
- "flate2",
- "image",
- "lopdf 0.34.0",
- "md-5",
- "openssl",
- "rayon",
- "serde",
- "serde_json",
- "thiserror 2.0.20",
- "time",
- "windows 0.61.3",
 ]
 
 [[package]]
@@ -3923,6 +3904,25 @@ name = "scopeguard"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
+
+[[package]]
+name = "segno_core"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64 0.22.1",
+ "flate2",
+ "image",
+ "lopdf 0.34.0",
+ "md-5",
+ "openssl",
+ "rayon",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.20",
+ "time",
+ "windows 0.61.3",
+]
 
 [[package]]
 name = "selectors"
@@ -6342,9 +6342,9 @@ dependencies = [
 
 [[package]]
 name = "zip"
-version = "2.4.2"
+version = "2.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fabe6324e908f85a1c52063ce7aa26b68dcb7eb6dbc83a2d148403c9bc3eba50"
+checksum = "ae9c1ea7b3a5e1f4b922ff856a129881167511563dc219869afe3787fc0c1a45"
 dependencies = [
  "arbitrary",
  "crc32fast",

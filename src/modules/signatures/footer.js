@@ -59,7 +59,7 @@ export async function createSignatureFooter(originalDataUrl) {
     const drawBrand = () => {
         context.fillStyle = '#003399';
         context.font = 'italic 20px "Segoe Script", cursive, Arial';
-        context.fillText('InkIt', 650, 30);
+        context.fillText('Segno', 650, 30);
         context.font = '12px Arial';
         context.fillText('VERIFIED', 655, 45);
         return canvas.toDataURL('image/png');
@@ -72,7 +72,7 @@ export async function createSignatureFooter(originalDataUrl) {
             resolve(drawBrand());
         };
         logo.onerror = () => resolve(drawBrand());
-        logo.src = '/InkIt_Logo.png';
+        logo.src = '/SegnoPDF_Logo.png';
     });
 
     return footerDataUrl;

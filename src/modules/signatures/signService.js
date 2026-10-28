@@ -12,7 +12,7 @@ import { showAlert, showConfirm } from '../confirmModal.js';
 /**
  * Flujo de "Firmar con .pfx existente" (botón dedicado en la toolbar, fuera
  * de la bóveda). Abre selector de .pfx, pide contraseña, firma el PDF
- * abierto y guarda el resultado en Documentos/InkIt/Signed.
+ * abierto y guarda el resultado en Documentos/Segno PDF/Signed.
  * Si hay cambios sin guardar, pide confirmación y guarda antes de firmar.
  * @returns {Promise<void>}
  */
@@ -52,7 +52,7 @@ export async function signCurrentPdfWithPfx() {
 
 /**
  * Firma el PDF indicado (o el actualmente abierto) con el .pfx/contraseña
- * dados y lo guarda en Documentos/InkIt/Signed. Compartido entre el botón de
+ * dados y lo guarda en Documentos/Segno PDF/Signed. Compartido entre el botón de
  * la toolbar (`signCurrentPdfWithPfx`) y el botón 🔐 de cada identidad en la
  * bóveda (vault.js).
  * @param {object} params
@@ -69,7 +69,7 @@ export async function signAndExport({ invoke, showAlert: alertFn, pdfViewer, pfx
     try {
         const currentPath = targetPdfPath || pdfViewer?.getCurrentPdfPath?.() || pdfViewer?.currentPdfPath || window.currentPdfPath;
         if (!currentPath) {
-            await notifyAlert('InkIt', t('alert.open_first_sign'), 'warning');
+            await notifyAlert('Segno', t('alert.open_first_sign'), 'warning');
             return;
         }
 
@@ -83,7 +83,7 @@ export async function signAndExport({ invoke, showAlert: alertFn, pdfViewer, pfx
         const { mkdir } = await import('@tauri-apps/plugin-fs');
 
         const docsPath = await documentDir();
-        const signedFolder = await join(docsPath, 'InkIt', 'Signed');
+        const signedFolder = await join(docsPath, 'Segno PDF', 'Signed');
         await mkdir(signedFolder, { recursive: true });
 
         const originalName = await basename(currentPath);
@@ -92,10 +92,10 @@ export async function signAndExport({ invoke, showAlert: alertFn, pdfViewer, pfx
 
         if (targetPath) {
             await invoke('save_file', { path: targetPath, contents: signedBytes });
-            await notifyAlert('InkIt', `${t('alert.signed_saved')}\n${targetPath}`, 'info');
+            await notifyAlert('Segno', `${t('alert.signed_saved')}\n${targetPath}`, 'info');
         }
     } catch (err) {
         console.error(err);
-        await notifyAlert('InkIt', t('alert.error_sign') + err, 'error');
+        await notifyAlert('Segno', t('alert.error_sign') + err, 'error');
     }
 }

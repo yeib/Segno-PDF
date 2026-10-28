@@ -75,7 +75,7 @@ function patchTauriWindowsBundle() {
 patchTauriWindowsBundle();
 
 try {
-  console.log(`\n🚀 Preparando compilación MSIX para InkIt...`);
+  console.log(`\n🚀 Preparando compilación MSIX para Segno PDF...`);
 
   // 1. Compilar frontend de producción
   console.log(`📦 Compilando bundle frontend Vite...`);
@@ -85,12 +85,41 @@ try {
   console.log(`🔨 Compilando binario con tauri build...`);
   execSync('npx tauri build', { stdio: 'inherit', cwd: rootDir });
 
+  // 2.5 Garantizar ejecutable para tauri-windows-bundle
+  console.log(`🔍 Garantizando ejecutable para tauri-windows-bundle...`);
+  const targetDir = path.join(rootDir, 'src-tauri', 'target', 'x86_64-pc-windows-msvc', 'release');
+  const releaseDir = path.join(rootDir, 'src-tauri', 'target', 'release');
+  if (!fs.existsSync(targetDir)) fs.mkdirSync(targetDir, { recursive: true });
+
+  const possibleSources = [
+    path.join(targetDir, 'inkit.exe'),
+    path.join(releaseDir, 'inkit.exe'),
+    path.join(targetDir, 'Segno-PDF.exe'),
+    path.join(releaseDir, 'Segno-PDF.exe'),
+    path.join(targetDir, 'Segno PDF.exe'),
+    path.join(releaseDir, 'Segno PDF.exe'),
+  ];
+
+  let foundSrc = null;
+  for (const src of possibleSources) {
+    if (fs.existsSync(src)) {
+      foundSrc = src;
+      break;
+    }
+  }
+
+  if (foundSrc) {
+    const dest = path.join(targetDir, 'SegnoPDF.exe');
+    fs.copyFileSync(foundSrc, dest);
+    console.log(`📦 Ejecutable copiado para bundle: ${foundSrc} -> ${dest}`);
+  }
+
   // 3. Copiar assets reales directamente a gen/windows/Assets antes de empaquetar
   const iconsPath = path.join(rootDir, 'src-tauri', 'icons');
   const genAssetsDir = path.join(rootDir, 'src-tauri', 'gen', 'windows', 'Assets');
   if (fs.existsSync(iconsPath)) {
     copyDir(iconsPath, genAssetsDir);
-    console.log(`🖼️ Iconos de InkIt copiados a gen/windows/Assets`);
+    console.log(`🖼️ Iconos de Segno PDF copiados a gen/windows/Assets`);
   }
 
   // 3.5 Verificar / Inicializar plantillas de Windows Bundle si no existen
@@ -110,7 +139,7 @@ try {
       bundleConf.storeId = '9PH8KK70MK9M';
       bundleConf.packageFamilyName = 'Yeib.InkIt_3qax6vkvgt6je';
       fs.writeFileSync(bundleConfPath, JSON.stringify(bundleConf, null, 2), 'utf-8');
-      console.log(`🔑 Credenciales oficiales de Microsoft Store inyectadas para InkIt (CN=A3BEC9C4-FDB6-4E8A-8B23-D67FB5F9DB0D, Yeib, 9PH8KK70MK9M)`);
+      console.log(`🔑 Credenciales oficiales de Microsoft Store inyectadas para Segno PDF (CN=A3BEC9C4-FDB6-4E8A-8B23-D67FB5F9DB0D, Yeib, 9PH8KK70MK9M)`);
     } catch (e) {
       console.warn(`⚠️ No se pudo inyectar credenciales en bundle.config.json:`, e);
     }
@@ -132,8 +161,8 @@ try {
     }
   }
 
-  console.log(`\n✅ Paquete MSIX compilado con éxito para InkIt!`);
+  console.log(`\n✅ Paquete MSIX compilado con éxito para Segno PDF!`);
 } catch (error) {
-  console.error(`\n❌ Error durante la compilación MSIX de InkIt:`, error);
+  console.error(`\n❌ Error durante la compilación MSIX de Segno PDF:`, error);
   process.exitCode = 1;
 }

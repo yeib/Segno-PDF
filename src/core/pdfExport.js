@@ -19,7 +19,7 @@ export async function savePdf(currentPdfPath) {
         currentPdfPath = getCurrentPdfPath?.() || window.currentPdfPath;
     }
     if (!currentPdfPath) {
-        await showAlert('InkIt', t('alert.open_first'), 'warning');
+        await showAlert('Segno', t('alert.open_first'), 'warning');
         return null;
     }
 
@@ -32,7 +32,7 @@ export async function savePdf(currentPdfPath) {
         const { getPageConfigs } = await import('./pdfViewer.js');
 
         const docsPath = await documentDir();
-        const editedFolder = await join(docsPath, 'InkIt', 'Edited');
+        const editedFolder = await join(docsPath, 'Segno PDF', 'Edited');
         await mkdir(editedFolder, { recursive: true });
 
         const originalName = await basename(currentPdfPath);
@@ -207,7 +207,7 @@ export async function exportPng(currentPdfPath) {
         const nameWithoutExt = originalName.replace(/\.[^/.]+$/, "");
         
         const docsPath = await documentDir();
-        const pngsFolder = await join(docsPath, 'InkIt', 'PNGs', nameWithoutExt);
+        const pngsFolder = await join(docsPath, 'Segno PDF', 'PNGs', nameWithoutExt);
         await mkdir(pngsFolder, { recursive: true });
 
         // Parse pages
@@ -266,5 +266,4 @@ export async function exportPng(currentPdfPath) {
         await showAlert(window.t ? window.t('alert.title.error') : 'Error', error.toString(), 'error');
     }
 }
-
 

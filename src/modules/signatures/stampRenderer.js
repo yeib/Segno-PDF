@@ -53,7 +53,7 @@ function loadLogo() {
         const img = new Image();
         img.onload = () => resolve(img);
         img.onerror = () => resolve(null);
-        img.src = '/InkIt_Logo.png';
+        img.src = '/SegnoPDF_Logo.png';
     });
 }
 
@@ -85,7 +85,7 @@ export async function generateVisualStamp({ name, detail = '', extra = '' }, dat
         sCtx.textAlign = 'center';
         sCtx.fillStyle = '#003399';
         sCtx.font = 'italic 12px "Segoe Script", cursive, Arial';
-        sCtx.fillText('InkIt', 32, 72);
+        sCtx.fillText('Segno', 32, 72);
         sCtx.font = 'bold 8.5px Arial';
         sCtx.fillText(texts.verified, 32, 85);
         sCtx.textAlign = 'left';
@@ -164,7 +164,7 @@ export async function generateFooterStamp({ name, detail = '', extra = '' }, dat
     fCtx.fillStyle = '#003399';
     fCtx.textAlign = 'right';
     fCtx.font = 'italic 18px "Segoe Script", cursive, Arial';
-    fCtx.fillText('InkIt', 720, 28);
+    fCtx.fillText('Segno', 720, 28);
     fCtx.font = 'bold 9px Arial';
     fCtx.fillText(texts.verified, 720, 43);
     fCtx.textAlign = 'left';

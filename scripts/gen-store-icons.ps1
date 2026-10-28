@@ -1,7 +1,7 @@
 Add-Type -AssemblyName System.Drawing
 
 $apps = @{
-    'inkit'  = 'public/InkIt_Logo.png'
+    'inkit'  = 'public/SegnoPDF_Logo.png'
 }
 
 $sizes = @{

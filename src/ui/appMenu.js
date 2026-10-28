@@ -29,11 +29,11 @@ export function setupAppMenu(getCurrentPdfPath) {
         document.getElementById('btn-open-workspace')?.addEventListener('click', async () => {
             try {
                 const documentsPath = await documentDir();
-                const workspacePath = await join(documentsPath, 'InkIt');
+                const workspacePath = await join(documentsPath, 'Segno PDF');
                 await mkdir(workspacePath, { recursive: true });
                 await invoke('open_file', { path: workspacePath });
             } catch (error) {
-                console.error('Error abriendo la carpeta de InkIt:', error);
+                console.error('Error abriendo la carpeta de Segno:', error);
             }
         });
 

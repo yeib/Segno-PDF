@@ -197,7 +197,7 @@ async function onGenerateStamp({ inputName, inputDetail, inputExtra, stampModal,
             const { invoke } = await import('@tauri-apps/api/core');
 
             const docsPath = await documentDir();
-            const folderPath = await join(docsPath, 'InkIt', 'Identities');
+            const folderPath = await join(docsPath, 'Segno PDF', 'Identities');
             await mkdir(folderPath, { recursive: true });
 
             outPath = await join(folderPath, `${name.replace(/\s+/g, '_')}_Identity.pfx`);
@@ -207,7 +207,7 @@ async function onGenerateStamp({ inputName, inputDetail, inputExtra, stampModal,
                     await invoke('create_pfx', { name, detail, password, outPath });
                 } catch (e) {
                     console.error(e);
-                    await showAlert('InkIt', t('alert.error_create_cert') + e, 'error');
+                    await showAlert('Segno', t('alert.error_create_cert') + e, 'error');
                     outPath = null;
                 }
             }
@@ -231,7 +231,7 @@ async function onGenerateStamp({ inputName, inputDetail, inputExtra, stampModal,
         if (esignVault) esignVault.style.display = 'flex';
     } catch (err) {
         console.error('Error generando identidad:', err);
-        await showAlert('InkIt', t('alert.error_create_cert') + err, 'error');
+        await showAlert('Segno', t('alert.error_create_cert') + err, 'error');
     }
 }
 
@@ -253,12 +253,12 @@ async function onImportPfxStamp({
     esignVault
 }) {
     if (!selectedPfxPath) {
-        await showAlert('InkIt', t('modal.pfx.no_file'), 'warning');
+        await showAlert('Segno', t('modal.pfx.no_file'), 'warning');
         return;
     }
     const password = pfxImportPassword ? pfxImportPassword.value : '';
     if (!password) {
-        await showAlert('InkIt', t('modal.pw.empty'), 'warning');
+        await showAlert('Segno', t('modal.pw.empty'), 'warning');
         pfxImportPassword?.focus();
         return;
     }
@@ -282,7 +282,7 @@ async function onImportPfxStamp({
         } else if (errStr.includes('WRONG_PASSWORD')) {
             msg = t('alert.pfx_wrong_pw');
         }
-        await showAlert('InkIt', msg, 'error');
+        await showAlert('Segno', msg, 'error');
         pfxImportPassword?.select();
         pfxImportPassword?.focus();
         return;
@@ -321,9 +321,9 @@ async function onImportPfxStamp({
         localStorage.setItem('inkit_esigns', JSON.stringify(saved));
         renderVaults();
         if (esignVault) esignVault.style.display = 'flex';
-        await showAlert('InkIt', t('alert.pfx_imported'), 'info');
+        await showAlert('Segno', t('alert.pfx_imported'), 'info');
     } catch (err) {
         console.error('Error al importar certificado:', err);
-        await showAlert('InkIt', t('alert.error_pfx_import') + err, 'error');
+        await showAlert('Segno', t('alert.error_pfx_import') + err, 'error');
     }
 }
