@@ -1,6 +1,6 @@
 [package]
 name = "inkit"
-version = "1.0.5"
+version = "1.0.7"
 description = "Segno PDF - Yeib Ecosystem"
 authors = ["Yeib"]
 repository = "https://github.com/yeib/Segno-PDF"

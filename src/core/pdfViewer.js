@@ -273,29 +273,21 @@ export async function exportPageAsPng(pageNum) {
 export async function closeDocument() {
     loadRequestId++;
     await releaseCurrentPdf();
-    
-    // Reset internal state
     currentScale = 1.2;
     import('../modules/signatures/auditModal.js').then(m => m.clearSignatureAudit()).catch(() => {});
     
-    // Clear DOM
-    container.innerHTML = `
-      <div class="empty-state">
-        <p data-i18n="pdf.empty">Drag & Drop a PDF document or click "Open PDF"</p>
-      </div>
-    `;
-    
+    container.innerHTML = `<div class="empty-state"><p data-i18n="pdf.empty">Drag & Drop a PDF document or click "Open PDF"</p></div>`;
     import('../modules/translations.js').then(m => m.applyTranslations());
     
-    // Clear annotations in state
-    const { setAnnotations } = await import('../modules/typewriter.js');
-    const { setImageAnnotations } = await import('../modules/signatures.js');
-    const { setHighlightAnnotations } = await import('../modules/highlights.js');
-    const { globalHistory } = await import('../modules/history.js');
-    
-    setAnnotations([]);
-    setImageAnnotations([]);
-    setHighlightAnnotations([]);
-    const { getGlobalState } = await import("../modules/state.js");
-    globalHistory.clear(getGlobalState());
+    const [tw, sig, hl, hist, st] = await Promise.all([
+        import('../modules/typewriter.js'),
+        import('../modules/signatures.js'),
+        import('../modules/highlights.js'),
+        import('../modules/history.js'),
+        import('../modules/state.js'),
+    ]);
+    tw.setAnnotations([]);
+    sig.setImageAnnotations([]);
+    hl.setHighlightAnnotations([]);
+    hist.globalHistory.clear(st.getGlobalState());
 }

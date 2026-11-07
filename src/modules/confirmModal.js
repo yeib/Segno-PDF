@@ -173,16 +173,24 @@ export function showConfirm(title, msg, okText = null, cancelText = null) {
         m.btnOk.textContent = okText || t('modal.btn.ok') || 'OK';
         m.btnCancel.textContent = cancelText || t('modal.btn.cancel') || 'Cancel';
 
+        const onKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                cleanup(false);
+            }
+        };
         const cleanup = (result) => {
             m.overlay.classList.remove('open');
             m.btnOk.onclick = null;
             m.btnCancel.onclick = null;
+            window.removeEventListener('keydown', onKeyDown);
             resolve(result);
         };
         m.btnOk.onclick = () => cleanup(true);
         m.btnCancel.onclick = () => cleanup(false);
+        window.addEventListener('keydown', onKeyDown);
         m.overlay.classList.add('open');
-        m.btnOk.focus();
+        m.btnCancel.focus();
     });
 }
 
