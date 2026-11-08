@@ -3,6 +3,7 @@ import { getCurrentPdf, getCurrentPdfPath } from '../core/pdfViewer.js';
 import { showAlert } from '../modules/confirmModal.js';
 import { t } from '../modules/translations.js';
 import { buildPrintModalHtml, ICONS } from './printModalTemplate.js';
+import { updatePreviewSheet as updateSheetLayout } from './printPreviewHelper.js';
 
 let modalEl = null;
 let currentPreviewPage = 1;
@@ -10,6 +11,7 @@ let currentCopies = 1;
 let currentRangeMode = 'all';
 let currentOrientation = 'auto';
 let printerList = [];
+let currentPageNaturalIsLandscape = false;
 
 function ensureModal() {
     if (modalEl) return modalEl;
@@ -40,6 +42,11 @@ function ensureModal() {
     modalEl.querySelector('#btn-orient-portrait').addEventListener('click', () => setOrientation('portrait'));
     modalEl.querySelector('#btn-orient-landscape').addEventListener('click', () => setOrientation('landscape'));
 
+    // Reactive controls
+    modalEl.querySelector('#print-paper-size').addEventListener('change', updatePreviewSheet);
+    modalEl.querySelector('#print-scale-mode').addEventListener('change', updatePreviewSheet);
+    modalEl.querySelector('#print-color-mode').addEventListener('change', updatePreviewSheet);
+
     // Preview page buttons
     modalEl.querySelector('#btn-print-prev-page').addEventListener('click', () => {
         const pdf = getCurrentPdf();
@@ -64,39 +71,32 @@ function updateCopies(val) {
 
 function setRangeMode(mode) {
     currentRangeMode = mode;
+    const isAll = mode === 'all';
     const btnAll = modalEl.querySelector('#btn-range-all');
     const btnCustom = modalEl.querySelector('#btn-range-custom');
     const inputCont = modalEl.querySelector('#print-custom-range-container');
 
-    if (mode === 'all') {
-        btnAll.style.background = '#4f46e5';
-        btnAll.style.color = '#fff';
-        btnCustom.style.background = 'transparent';
-        btnCustom.style.color = '#94a3b8';
-        inputCont.style.display = 'none';
-    } else {
-        btnCustom.style.background = '#4f46e5';
-        btnCustom.style.color = '#fff';
-        btnAll.style.background = 'transparent';
-        btnAll.style.color = '#94a3b8';
-        inputCont.style.display = 'flex';
-        inputCont.querySelector('input').focus();
-    }
+    btnAll.style.background = isAll ? '#4f46e5' : 'transparent';
+    btnAll.style.color = isAll ? '#fff' : '#94a3b8';
+    btnCustom.style.background = isAll ? 'transparent' : '#4f46e5';
+    btnCustom.style.color = isAll ? '#94a3b8' : '#fff';
+    inputCont.style.display = isAll ? 'none' : 'flex';
+    if (!isAll) inputCont.querySelector('input').focus();
 }
 
 function setOrientation(mode) {
     currentOrientation = mode;
-    const modes = ['auto', 'portrait', 'landscape'];
-    modes.forEach((m) => {
+    ['auto', 'portrait', 'landscape'].forEach((m) => {
         const btn = modalEl.querySelector(`#btn-orient-${m}`);
-        if (m === mode) {
-            btn.style.background = '#4f46e5';
-            btn.style.color = '#fff';
-        } else {
-            btn.style.background = 'transparent';
-            btn.style.color = '#94a3b8';
-        }
+        const active = m === mode;
+        btn.style.background = active ? '#4f46e5' : 'transparent';
+        btn.style.color = active ? '#fff' : '#94a3b8';
     });
+    updatePreviewSheet();
+}
+
+function updatePreviewSheet() {
+    updateSheetLayout(modalEl, currentOrientation, currentPageNaturalIsLandscape, currentPreviewPage);
 }
 
 export async function openPrintModal() {
@@ -133,16 +133,17 @@ async function renderPreview(pageNum) {
         currentPreviewPage = Math.max(1, Math.min(pdf.numPages, pageNum));
         const page = await pdf.getPage(currentPreviewPage);
         const viewport = page.getViewport({ scale: 1.0 });
-        const scale = Math.min(300 / viewport.width, 380 / viewport.height, 1.5);
-        const scaledViewport = page.getViewport({ scale });
+        currentPageNaturalIsLandscape = viewport.width > viewport.height;
 
         const canvas = modalEl.querySelector('#print-preview-canvas');
         const ctx = canvas.getContext('2d');
+        const scaledViewport = page.getViewport({ scale: 2.0 });
         canvas.width = scaledViewport.width;
         canvas.height = scaledViewport.height;
 
         await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
         modalEl.querySelector('#print-preview-page-info').textContent = `${currentPreviewPage} de ${pdf.numPages}`;
+        updatePreviewSheet();
     } catch (e) {
         console.warn('Error en preview de impresión:', e);
     }

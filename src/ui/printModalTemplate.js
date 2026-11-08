@@ -38,9 +38,10 @@ export function buildPrintModalHtml() {
                 <button id="btn-print-next-page" type="button" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; width: 22px; height: 22px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px;">›</button>
               </div>
             </div>
-            <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden;">
-              <div style="background: rgba(255, 255, 255, 0.03); border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px; display: flex; align-items: center; justify-content: center; max-height: 100%; max-width: 100%;">
-                <canvas id="print-preview-canvas" style="max-width: 100%; max-height: 380px; object-fit: contain; box-shadow: 0 10px 30px rgba(0,0,0,0.7); border-radius: 4px; background: #fff;"></canvas>
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 24px; min-height: 0; overflow: hidden; background: radial-gradient(circle at center, rgba(30, 41, 59, 0.35) 0%, rgba(7, 10, 18, 0.8) 100%);">
+              <div id="print-preview-sheet" style="position: relative; width: 255px; height: 360px; background: #ffffff; border-radius: 6px; box-shadow: 0 16px 45px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.12); overflow: hidden; display: flex; align-items: center; justify-content: center; transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1), height 0.28s cubic-bezier(0.16, 1, 0.3, 1); box-sizing: border-box;">
+                <canvas id="print-preview-canvas" style="width: 100%; height: 100%; object-fit: contain; padding: 4px; box-sizing: border-box; display: block; transition: filter 0.2s ease;"></canvas>
+                <span id="print-preview-badge" style="position: absolute; bottom: 8px; right: 8px; padding: 2px 7px; border-radius: 4px; background: rgba(15, 23, 42, 0.85); color: #ffffff; font-size: 10px; font-weight: 600; pointer-events: none; letter-spacing: 0.02em; backdrop-filter: blur(4px);">Pág. 1</span>
               </div>
             </div>
           </div>
