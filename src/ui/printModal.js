@@ -3,7 +3,7 @@ import { getCurrentPdf, getCurrentPdfPath } from '../core/pdfViewer.js';
 import { showAlert } from '../modules/confirmModal.js';
 import { t } from '../modules/translations.js';
 import { buildPrintModalHtml, ICONS } from './printModalTemplate.js';
-import { updatePreviewSheet as updateSheetLayout } from './printPreviewHelper.js';
+import { updatePreviewSheet as updateSheetLayout, drawAnnotationsOnCanvas } from './printPreviewHelper.js';
 
 let modalEl = null;
 let currentPreviewPage = 1;
@@ -142,6 +142,7 @@ async function renderPreview(pageNum) {
         canvas.height = scaledViewport.height;
 
         await page.render({ canvasContext: ctx, viewport: scaledViewport }).promise;
+        await drawAnnotationsOnCanvas(ctx, currentPreviewPage, 2.0);
         modalEl.querySelector('#print-preview-page-info').textContent = `${currentPreviewPage} de ${pdf.numPages}`;
         updatePreviewSheet();
     } catch (e) {
@@ -203,6 +204,7 @@ async function handleDispatchPrint() {
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             await page.render({ canvasContext: ctx, viewport }).promise;
+            await drawAnnotationsOnCanvas(ctx, i, 2.0);
             pagesDataUrls.push(canvas.toDataURL('image/png'));
         }
 

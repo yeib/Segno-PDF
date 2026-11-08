@@ -4,6 +4,7 @@ import { mkdir } from '@tauri-apps/plugin-fs';
 import { showAlert } from '../modules/confirmModal.js';
 import { t } from '../modules/translations.js';
 import { openPrintModal } from './printModal.js';
+import { getCurrentPdf } from '../core/pdfViewer.js';
 
 export function setupAppMenu(getCurrentPdfPath) {
     const toggle = document.getElementById('btn-main-menu');
@@ -101,7 +102,7 @@ export function setupAppMenu(getCurrentPdfPath) {
 }
 
 async function printDocument(currentPdfPath) {
-    if (!currentPdfPath) {
+    if (!currentPdfPath && !getCurrentPdf()) {
         await showAlert(t('alert.title.attention'), t('alert.open_first'), 'warning');
         return;
     }

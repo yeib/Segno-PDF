@@ -47,3 +47,91 @@ export function updatePreviewSheet(modalEl, currentOrientation, currentPageNatur
         badge.textContent = `Pág. ${currentPreviewPage} · ${paperLabel} (${orientLabel})`;
     }
 }
+
+/**
+ * Superpone las anotaciones del usuario (resaltadores, firmas, sellos, lápiz y texto mecanografiado)
+ * sobre el canvas de la página al renderizar la vista previa o enviar a la impresora.
+ */
+export async function drawAnnotationsOnCanvas(ctx, pageNum, scale) {
+    if (!ctx) return;
+
+    // 1. Capa de Resaltadores
+    try {
+        const { highlightAnnotations } = await import('../modules/highlights.js');
+        const pageHighlights = (highlightAnnotations || []).filter((h) => h.pageNum === pageNum);
+        for (const hl of pageHighlights) {
+            if (hl.points && hl.points.length > 1) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.strokeStyle = hl.color || '#facc15';
+                ctx.lineWidth = 16 * scale;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                const isRgba = hl.color && hl.color.includes('rgba');
+                ctx.globalAlpha = isRgba ? 1.0 : (hl.opacity !== undefined ? hl.opacity : 0.4);
+                ctx.moveTo(hl.points[0].x * scale, hl.points[0].y * scale);
+                for (let i = 1; i < hl.points.length; i++) {
+                    ctx.lineTo(hl.points[i].x * scale, hl.points[i].y * scale);
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+    } catch (_) {}
+
+    // 2. Capa de Imágenes (Firmas, Sellos, Trazos de Lápiz)
+    try {
+        const { imageAnnotations } = await import('../modules/signatures.js');
+        const pageImages = (imageAnnotations || []).filter((img) => img.pageNum === pageNum);
+        for (const imgAnno of pageImages) {
+            await new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    ctx.save();
+                    ctx.globalAlpha = imgAnno.opacity !== undefined ? imgAnno.opacity : 1.0;
+                    ctx.drawImage(
+                        img,
+                        imgAnno.x * scale,
+                        imgAnno.y * scale,
+                        imgAnno.width * scale,
+                        imgAnno.height * scale
+                    );
+                    ctx.restore();
+                    resolve();
+                };
+                img.onerror = resolve;
+                img.src = imgAnno.dataUrl;
+            });
+        }
+    } catch (_) {}
+
+    // 3. Capa de Texto Mecanografiado (Typewriter)
+    try {
+        const { annotations } = await import('../modules/typewriter.js');
+        const pageTexts = (annotations || []).filter((txt) => txt.pageNum === pageNum);
+        for (const txt of pageTexts) {
+            ctx.save();
+            const fontSize = txt.fontSize * scale;
+            ctx.font = `${fontSize}px Arial, sans-serif`;
+            ctx.textBaseline = 'top';
+
+            if (txt.bgColor && txt.bgColor !== 'transparent') {
+                const bg = txt.bgColor === 'white' ? '#ffffff'
+                    : txt.bgColor === 'gray' ? '#f0f0f0'
+                    : txt.bgColor === 'black' ? '#000000' : txt.bgColor;
+                ctx.fillStyle = bg;
+                const textWidth = ctx.measureText(txt.text).width;
+                ctx.fillRect(
+                    txt.x * scale - (2 * scale),
+                    txt.y * scale - (2 * scale),
+                    textWidth + (4 * scale),
+                    fontSize + (4 * scale)
+                );
+            }
+
+            ctx.fillStyle = txt.bgColor === 'black' && txt.color === '#000000' ? '#ffffff' : (txt.color || '#000000');
+            ctx.fillText(txt.text, txt.x * scale, txt.y * scale);
+            ctx.restore();
+        }
+    } catch (_) {}
+}
