@@ -3,8 +3,11 @@
 use lopdf::content::Operation;
 use lopdf::{Document, Object, ObjectId, StringFormat};
 
+use std::sync::atomic::{AtomicU64, Ordering};
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use super::helpers::{name_object, parse_hex_color, utf8_to_winansi};
-use super::page_ops::{append_content_stream, insert_resource_in_page, PageTarget};
+use super::page_ops::{append_content_stream, insert_resource_in_page, resource_exists, PageTarget};
 use super::resources::{
     build_difference_extgstate, build_extgstate_dictionary, build_font_dictionary,
     build_image_xobject, decode_base64_png,
@@ -12,18 +15,36 @@ use super::resources::{
 use super::types::Point;
 use crate::utils::map_y;
 
+static SESSION_COUNTER: AtomicU64 = AtomicU64::new(1);
+
 /// Nombre del recurso `ExtGState` usado por el modo oscuro.
 const DARK_MODE_GS_NAME: &str = "YeibGS_DarkMode";
 /// Nombre del recurso de fuente Helvetica registrado en las páginas.
 const FONT_NAME: &str = "YeibF1";
 
 /// Estado compartido entre operaciones durante un mismo aplanado.
-#[derive(Default)]
 pub(super) struct FlattenState {
-    /// Contador para nombres únicos de imágenes (`YeibImg{n}`).
+    /// Prefijo único de sesión para evitar colisión de XObjects o ExtGStates en ciclos sucesivos de edición.
+    prefix: String,
+    /// Contador para nombres únicos de imágenes.
     img_counter: u32,
     /// Fuente Helvetica, creada una sola vez por documento.
     font_f1_id: Option<ObjectId>,
+}
+
+impl Default for FlattenState {
+    fn default() -> Self {
+        let seq = SESSION_COUNTER.fetch_add(1, Ordering::Relaxed);
+        let seed = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|d| d.as_micros() as u64)
+            .unwrap_or(0);
+        Self {
+            prefix: format!("YI_{seed:x}_{seq:x}_"),
+            img_counter: 0,
+            font_f1_id: None,
+        }
+    }
 }
 
 /// Inversión de colores: rectángulo blanco a página completa con blend `Difference`.
@@ -76,7 +97,11 @@ pub(super) fn apply_image(
         .map_err(|e| format!("Error construyendo imagen PDF: {}", e))?;
 
     state.img_counter += 1;
-    let xobj_name = format!("YeibImg{}", state.img_counter);
+    let mut xobj_name = format!("{}Img{}", state.prefix, state.img_counter);
+    while resource_exists(doc, target.id, "XObject", &xobj_name) {
+        state.img_counter += 1;
+        xobj_name = format!("{}Img{}", state.prefix, state.img_counter);
+    }
     insert_resource_in_page(doc, target.id, "XObject", &xobj_name, image_id)
         .map_err(|e| format!("Error registrando imagen en página {page}: {e}"))?;
 
@@ -85,7 +110,11 @@ pub(super) fn apply_image(
 
     if opac < 1.0 {
         let gs_id = build_extgstate_dictionary(doc, opac);
-        let gs_name = format!("YeibGS_Img{}", state.img_counter);
+        let mut gs_name = format!("{}GS{}", state.prefix, state.img_counter);
+        while resource_exists(doc, target.id, "ExtGState", &gs_name) {
+            state.img_counter += 1;
+            gs_name = format!("{}GS{}", state.prefix, state.img_counter);
+        }
         insert_resource_in_page(doc, target.id, "ExtGState", &gs_name, gs_id)
             .map_err(|e| format!("Error registrando opacidad en página {page}: {e}"))?;
         ops.push(Operation::new("gs", vec![name_object(&gs_name)]));

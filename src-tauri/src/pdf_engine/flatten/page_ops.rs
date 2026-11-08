@@ -43,6 +43,30 @@ pub(crate) fn get_field(dict: &Dictionary, key: &[u8]) -> Option<Object> {
     dict.get(key).ok().cloned()
 }
 
+pub(crate) fn resource_exists(
+    doc: &Document,
+    page_id: ObjectId,
+    res_type: &str,
+    res_name: &str,
+) -> bool {
+    let Ok(page_dict) = doc.get_object(page_id).and_then(|o| o.as_dict()) else {
+        return false;
+    };
+    let Some(resources_obj) = get_field(page_dict, b"Resources") else {
+        return false;
+    };
+    let Ok((resources_dict, _)) = resolve_dict(doc, &resources_obj) else {
+        return false;
+    };
+    let Some(target_obj) = get_field(&resources_dict, res_type.as_bytes()) else {
+        return false;
+    };
+    let Ok((target_dict, _)) = resolve_dict(doc, &target_obj) else {
+        return false;
+    };
+    target_dict.has(res_name.as_bytes())
+}
+
 /// Registra un recurso (`Font`, `ExtGState`, `XObject`...) en el diccionario
 /// `/Resources` de una página, respetando si este y su sub-diccionario son
 /// directos o indirectos.
