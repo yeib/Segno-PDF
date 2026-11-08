@@ -118,6 +118,29 @@ fn inspect_pdf_signatures(
         .map_err(|e| format!("Error inspeccionando firmas digitales: {e}"))
 }
 
+#[tauri::command]
+async fn yeib_list_printers() -> Result<Vec<yeib_print::PrinterInfo>, String> {
+    tauri::async_runtime::spawn_blocking(|| yeib_print::list_printers().map_err(|e| e.to_string()))
+        .await
+        .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+async fn yeib_print_pages(
+    spec: yeib_print::PrintJobSpec,
+    pages: Option<Vec<String>>,
+    pages_base64: Option<Vec<String>>,
+) -> Result<yeib_print::PrintJobResult, String> {
+    let list = pages
+        .or(pages_base64)
+        .ok_or_else(|| "Faltan las páginas a imprimir".to_string())?;
+    tauri::async_runtime::spawn_blocking(move || {
+        yeib_print::print_page_sources(&spec, &list).map_err(|e| e.to_string())
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -133,7 +156,9 @@ pub fn run() {
             create_pfx,
             open_file,
             inspect_pfx,
-            inspect_pdf_signatures
+            inspect_pdf_signatures,
+            yeib_list_printers,
+            yeib_print_pages
         ])
         .setup(|app| {
             if cfg!(debug_assertions) {

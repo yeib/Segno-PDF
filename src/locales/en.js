@@ -112,6 +112,9 @@ export const en = {
     "modal.pw.empty": "Password cannot be empty.",
     "modal.pw.mismatch": "Passwords do not match.",
     "modal.pw.password": "Password",
+    "modal.pw.pdf_hint": "This PDF file requires a password to open.",
+    "modal.pw.pdf_title": "Protected Document",
+    "modal.pw.pdf_wrong": "Incorrect password. Please try again.",
     "modal.pw.repeat": "Repeat password",
     "modal.sig.title": "Draw your signature",
     "modal.stamp.desc": "Enter your details to generate a digital identity.",
@@ -163,5 +166,7 @@ export const en = {
     "vault.import_identity": "+ Import",
     "vault.new_identity": "+ Identity",
     "vault.new_sig": "+ Draw",
-    "vault.stamp_title": "My Stamps & Marks"
+    "vault.stamp_title": "My Stamps & Marks",
+    "viewer.error_open": "Error opening document.",
+    "viewer.password_required": "This document requires a password to open."
 };

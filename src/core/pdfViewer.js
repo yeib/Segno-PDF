@@ -8,6 +8,7 @@ import {
 } from './pdfPageRenderer.js';
 import { renderPageAsPng } from './pdfPageExport.js';
 import { getPdfJsDocumentParams } from './pdfjsConfig.js';
+import { attachPdfPasswordHandler, formatPdfLoadError } from './pdfPasswordHandler.js';
 
 let currentPdf = null;
 let currentScale = 1.2;
@@ -24,6 +25,10 @@ export function setCurrentPdfPath(path) {
 
 export function getCurrentPdfPath() {
     return currentPdfPath;
+}
+
+export function getCurrentPdf() {
+    return currentPdf;
 }
 
 export function getTotalPages() {
@@ -184,6 +189,7 @@ export async function loadDocument(pdfBytes) {
         container.innerHTML = '<div class="loading-state"><p>' + (window.t ? window.t('loading') : 'Loading...') + '</p></div>';
         
         currentLoadingTask = pdfjsLib.getDocument(getPdfJsDocumentParams({ data: pdfBytes }));
+        attachPdfPasswordHandler(currentLoadingTask);
         currentPdf = await currentLoadingTask.promise;
         if (requestId !== loadRequestId) return;
         
@@ -230,7 +236,7 @@ export async function loadDocument(pdfBytes) {
         } catch (cleanupError) {
             console.error("Error liberando el PDF después de un fallo de carga:", cleanupError);
         }
-        container.innerHTML = `<div class="error-state"><p>Error al abrir el PDF: ${error.message}</p></div>`;
+        container.innerHTML = `<div class="error-state"><p>${formatPdfLoadError(error)}</p></div>`;
     }
 }
 

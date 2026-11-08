@@ -475,7 +475,7 @@ main.workspace {
 /* Custom Context Menu for Signatures & Stamps */
 #sig-context-menu {
   position: fixed !important;
-  background: rgba(18, 18, 18, 0.94) !important;
+  background: rgba(12, 16, 24, 0.97) !important;
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;

@@ -1,6 +1,6 @@
 [package]
 name = "inkit"
-version = "1.0.7"
+version = "1.0.8"
 description = "Segno PDF - Yeib Ecosystem"
 authors = ["Yeib"]
 repository = "https://github.com/yeib/Segno-PDF"
@@ -34,5 +34,6 @@ time = { version = "0.3", features = ["local-offset"] }
 
 openssl = { version = "0.10", features = ["vendored"] }
 tauri-plugin-shell = "2.3.6"
+yeib_print = "0.1"
 yeib_sys = { path = "../../crates/yeib_sys" }
 segno_core = { path = "../../crates/segno_core" }

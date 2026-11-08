@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { mkdir } from '@tauri-apps/plugin-fs';
 import { showAlert } from '../modules/confirmModal.js';
 import { t } from '../modules/translations.js';
+import { openPrintModal } from './printModal.js';
 
 export function setupAppMenu(getCurrentPdfPath) {
     const toggle = document.getElementById('btn-main-menu');
@@ -104,5 +105,5 @@ async function printDocument(currentPdfPath) {
         await showAlert(t('alert.title.attention'), t('alert.open_first'), 'warning');
         return;
     }
-    window.print();
+    await openPrintModal();
 }

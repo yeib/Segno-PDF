@@ -112,6 +112,9 @@ export const es = {
     "modal.pw.empty": "La contraseña no puede estar vacía.",
     "modal.pw.mismatch": "Las contraseñas no coinciden.",
     "modal.pw.password": "Contraseña",
+    "modal.pw.pdf_hint": "Este archivo PDF requiere una contraseña para abrirse.",
+    "modal.pw.pdf_title": "Documento Protegido",
+    "modal.pw.pdf_wrong": "Contraseña incorrecta. Por favor, inténtalo de nuevo.",
     "modal.pw.repeat": "Repite la contraseña",
     "modal.sig.title": "Dibuja tu firma",
     "modal.stamp.desc": "Ingresa tus datos para generar una identidad digital.",
@@ -163,5 +166,7 @@ export const es = {
     "vault.import_identity": "+ Importar",
     "vault.new_identity": "+ Identidad",
     "vault.new_sig": "+ Dibujar",
-    "vault.stamp_title": "Mis Timbres y Trazos"
+    "vault.stamp_title": "Mis Timbres y Trazos",
+    "viewer.error_open": "Error al abrir el documento.",
+    "viewer.password_required": "Este documento requiere contraseña para abrirse."
 };
