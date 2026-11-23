@@ -1,5 +1,5 @@
-import { en } from '../locales/en.js';
-import { es } from '../locales/es.js';
+import { en } from '../locales/en/index.js';
+import { es } from '../locales/es/index.js';
 
 export const translations = {
   en,
